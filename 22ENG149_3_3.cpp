@@ -83,7 +83,12 @@ public:
     }
 
     void remove(int data) {
-        remove(root, data);
+        if (root == nullptr) {
+            cout << "Tree is empty." << endl;
+        }
+        else {
+            remove(root, data);
+        }
     }
 
 
@@ -98,7 +103,14 @@ public:
     }
 
     void printPreOrder() {
-		printPreOrder(root);
+        if (root == nullptr) {
+            cout << "Tree is empty." << endl;
+        }
+        else {
+            cout << "Pre-order: ";
+            printPreOrder(root);
+            cout << endl;
+        }
 	}
 
     void printInOrder(Node* current) {
@@ -111,7 +123,14 @@ public:
     }
 
     void printInOrder() {
-		printInOrder(root);
+        if (root == nullptr) {
+            cout << "Tree is empty." << endl;
+        }
+        else {
+            cout << "In-order: ";
+            printInOrder(root);
+            cout << endl;
+        }
 	}
 
     void printPostOrder(Node* current) {
@@ -128,11 +147,36 @@ public:
     }
 
     void printPostOrder() {
-        printPostOrder(root);
+        if (root == nullptr) {
+			cout << "Tree is empty." << endl;
+		}
+		else {
+            cout << "Post-order: ";
+			printPostOrder(root);
+            cout << endl;
+		}
+    }
+
+    void print() {
+        if (root == nullptr) {
+            cout << "Tree is empty." << endl;
+        }
+        else {
+            printPreOrder();
+            printInOrder();
+            printPostOrder();
+            
+        }
     }
 
     void search(int data) {
         Node* current = root;
+
+        if(root == nullptr) {
+			cout << "Tree is empty." << endl;
+			return;
+		}
+
         while (current != nullptr) {
             if (data < current->data) {
                 current = current->leftChild;
@@ -141,10 +185,11 @@ public:
                 current = current->rightChild;
             }
             else {
-                cout << data << " exist in the tree." << endl;
+                cout << data << " exists in the tree." << endl;
+                return;
             }
         }
-        cout << data << " do not exist in the tree."<< endl;
+        cout << data << " do not exists in the tree."<< endl;
     }
 
     int countNodes(Node* current) {
@@ -158,19 +203,26 @@ public:
         return 1 + leftCount + rightCount;
     }
 
-    int countNodes() {
-		return countNodes(root);
+    void countNodes() {
+        if (root == nullptr) {
+            cout << "Tree is empty." << endl;
+        }
+        else {
+			cout << "Number of nodes in the tree: "<<countNodes(root);
+            cout << endl;
+		}
 	}
 
     int getHeight(Node* current) {
         if (current == nullptr) {
-            return 0; //  height 0 for an empty tree
+            return -1; // Height of an empty tree is -1
         }
 
         int leftHeight = getHeight(current->leftChild);
         int rightHeight = getHeight(current->rightChild);
 
         int height;
+
         if (leftHeight > rightHeight) {
             height = leftHeight + 1;
         }
@@ -181,36 +233,43 @@ public:
         return height;
     }
 
-    int getHeight() {
-        return getHeight(root);
+    void printHeight() {
+        if(root == nullptr) {
+			cout << "Tree is empty." << endl;
+		} else {
+			cout << "Height of the tree is " << getHeight(root) << endl;
+		}
     }
 
-    int findSmallestValue() {
-        Node* current = root;
-        if (current == nullptr) {
-            return -1; // Return -1 if tree is empty
+    void findSmallestValue() {
+        if (root == nullptr) {
+            cout << "Tree is empty" << endl; // Return -1 if tree is empty
+            return;
         }
 
+        Node* current = root;
         // Traverse to the leftmost node
         while (current->leftChild != nullptr) {
             current = current->leftChild;
         }
 
-        return current->data;
+        cout << "Smallest value is " << current->data << endl;
     }
 
-    int findLargestValue() {
-        Node* current = root;
-        if (current == nullptr) {
-            return -1; // Return -1 if tree is empty
+    void findLargestValue() {
+        if (root == nullptr) {
+            cout << "Tree is empty" << endl; // Return -1 if tree is empty
+            return;
         }
+        Node* current = root;
+       
 
         // Traverse to the rightmost node
         while (current->rightChild != nullptr) {
             current = current->rightChild;
         }
 
-        return current->data;
+        cout << "Largest value is " << current->data << endl;
     }
 
     void deleteTree(Node* current) {
@@ -223,12 +282,44 @@ public:
     }
 
     void deleteTree() {
-        deleteTree(root);
+        if (root == nullptr) {
+            cout << "Tree is empty." << endl;
+        }
+        else {
+            deleteTree(root);
+        }
     }
 };
 
 int main()
 {
-    
+    BinarySearchTree tree;
+
+    int values[] = { 4 ,8 ,10, 2, 7 };
+    //int values[] = { 349, 825, 492, 190, 746, 312, 591, 837, 664, 280, 174, 954, 723, 565, 198, 407, 951, 621, 379, 503, 714, 276, 832, 468, 902, 134, 579, 215};
+    int size = sizeof(values) / sizeof(values[0]);
+
+    for(int value: values) {
+		tree.insert(value);
+	}
+
+    tree.print();
+
+    tree.printHeight();
+    tree.findSmallestValue();
+    tree.findLargestValue();
+    tree.search(11);
+    tree.countNodes();
+
+    tree.remove(8);
+  
+    tree.printPreOrder();
+    tree.printInOrder();
+    tree.printPostOrder();
+    tree.search(2);
+    tree.deleteTree();
+
+
+    return 0;
 }
 
