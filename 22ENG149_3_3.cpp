@@ -131,6 +131,22 @@ public:
         printPostOrder(root);
     }
 
+    void search(int data) {
+        Node* current = root;
+        while (current != nullptr) {
+            if (data < current->data) {
+                current = current->leftChild;
+            }
+            else if (data > current->data) {
+                current = current->rightChild;
+            }
+            else {
+                cout << data << " exist in the tree." << endl;
+            }
+        }
+        cout << data << " do not exist in the tree."<< endl;
+    }
+
     int countNodes(Node* current) {
         if (current == nullptr) {
             return 0;
@@ -169,36 +185,7 @@ public:
         return getHeight(root);
     }
 
-    void deleteTree(Node* current) {
-        if (current == nullptr) {
-            return;
-        }
-        deleteTree(current->leftChild);
-        deleteTree(current->rightChild);
-        delete current;
-    }
-
-    void deleteTree() {
-        deleteTree(root);
-    }
-
-    bool search(int data) {
-        Node* current = root;
-        while (current != nullptr) {
-            if (data < current->data) {
-                current = current->leftChild;
-            }
-            else if (data > current->data) {
-                current = current->rightChild;
-            }
-            else {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    int findMinValue() {
+    int findSmallestValue() {
         Node* current = root;
         if (current == nullptr) {
             return -1; // Return -1 if tree is empty
@@ -212,7 +199,7 @@ public:
         return current->data;
     }
 
-    int findMaxValue() {
+    int findLargestValue() {
         Node* current = root;
         if (current == nullptr) {
             return -1; // Return -1 if tree is empty
@@ -226,10 +213,22 @@ public:
         return current->data;
     }
 
+    void deleteTree(Node* current) {
+        if (current == nullptr) {
+            return;
+        }
+        deleteTree(current->leftChild);
+        deleteTree(current->rightChild);
+        delete current;
+    }
+
+    void deleteTree() {
+        deleteTree(root);
+    }
 };
 
 int main()
 {
-    cout << "Hello World!\n";
+    
 }
 
