@@ -24,69 +24,68 @@ public:
 		root = nullptr;
 	}
 
-    Node* insert(Node* root, int data) {
-        if (root == nullptr) {
+    void insert(Node*& current, int data) {
+        if (current == nullptr) {
             Node* node = new Node(data);
-            return root = node;
+            current = node;
+            return;
         }
 
-        if (data < root->data) {
-            root->leftChild = insert(root->leftChild, data);
+        if (data < current->data) {
+            insert(current->leftChild, data);
         }
-        else if (data > root->data) {
-            root->rightChild = insert(root->rightChild, data);
+        else if (data > current->data) {
+            insert(current->rightChild, data);
         }
-
-        return root;
     }
 
     void insert(int data) {
 		insert(root, data);
 	}
 
-    Node* remove(Node* root, int data) {
-        if (root == nullptr) {
-            return nullptr;
+    void remove(Node*& current, int data) {
+        if (current == nullptr) {
+            return;
         }
 
-        if (data < root->data) {
-            root->leftChild = remove(root->leftChild, data);
+        if (data < current->data) {
+            remove(current->leftChild, data);
         }
-        else if (data > root->data) {
-            root->rightChild = remove(root->rightChild, data);
+        else if (data > current->data) {
+            remove(current->rightChild, data);
         }
         else {
             // Node to be deleted found
-            if (root->leftChild == nullptr) {
-                Node* rightSubtree = root->rightChild;
-                delete root;
-                return rightSubtree;
+            if (current->leftChild == nullptr) {
+                Node* rightSubtree = current->rightChild;
+                delete current;
+                current = rightSubtree;
             }
-            else if (root->rightChild == nullptr) {
-                Node* leftSubtree = root->leftChild;
-                delete root;
-                return leftSubtree;
+            else if (current->rightChild == nullptr) {
+                Node* leftSubtree = current->leftChild;
+                delete current;
+                current = leftSubtree;
             }
+            else {
+                // Node with two children: Get the in-order successor (smallest in the right subtree)
+                Node* successor = current->rightChild;
+                while (successor->leftChild != nullptr) {
+                    successor = successor->leftChild;
+                }
 
-            // Node with two children: Get the in-order successor (smallest in the right subtree)
-            Node* successor = root->rightChild;
-            while (successor->leftChild != nullptr) {
-                successor = successor->leftChild;
+                // Copy the in-order successor's data to this node
+                current->data = successor->data;
+
+                // Remove the in-order successor
+                remove(current->rightChild, successor->data);
             }
-
-            // Copy the in-order successor's data to this node
-            root->data = successor->data;
-
-            // Remove the in-order successor
-            root->rightChild = remove(root->rightChild, successor->data);
         }
-
-        return root;
     }
 
     void remove(int data) {
         remove(root, data);
     }
+
 
     void printPreOrder(Node* current) {
         if (current == nullptr) {
@@ -147,13 +146,13 @@ public:
 		return countNodes(root);
 	}
 
-    int getHeight(Node* root) {
-        if (root == nullptr) {
+    int getHeight(Node* current) {
+        if (current == nullptr) {
             return 0; //  height 0 for an empty tree
         }
 
-        int leftHeight = getHeight(root->leftChild);
-        int rightHeight = getHeight(root->rightChild);
+        int leftHeight = getHeight(current->leftChild);
+        int rightHeight = getHeight(current->rightChild);
 
         int height;
         if (leftHeight > rightHeight) {
@@ -170,13 +169,13 @@ public:
         return getHeight(root);
     }
 
-    void deleteTree(Node* root) {
-        if (root == nullptr) {
+    void deleteTree(Node* current) {
+        if (current == nullptr) {
             return;
         }
-        deleteTree(root->leftChild);
-        deleteTree(root->rightChild);
-        delete root;
+        deleteTree(current->leftChild);
+        deleteTree(current->rightChild);
+        delete current;
     }
 
     void deleteTree() {
