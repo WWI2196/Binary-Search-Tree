@@ -1,5 +1,5 @@
 # Binary Search Tree (BST) Implementation
-This project implements a Binary Search Tree (BST) using a linked list structure. The BST class supports various operations including insertion, deletion, and traversal.
+This project provides a `Binary Search Tree`. It supports various operations such as inserting, deleting, and searching for nodes, as well as printing the tree in pre-order, in-order, and post-order. The class also includes methods to count nodes, get the height of the tree, and find the smallest and largest values.
 
 ## Overview
 The `BST` class provides the following operations:
